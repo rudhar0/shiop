@@ -1,0 +1,334 @@
+/* ===========================
+   OTP MODAL STYLES
+   =========================== */
+
+.otp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.otp-modal {
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 15px 60px rgba(123, 30, 58, 0.3);
+  position: relative;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.otp-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #8A8A8A;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.otp-modal-close:hover {
+  background-color: #F6C1CC;
+  color: #7B1E3A;
+  transform: rotate(90deg);
+}
+
+/* OTP Modal Header */
+.otp-modal-header {
+  text-align: center;
+  padding: 2.5rem 2rem 1.5rem;
+  background: linear-gradient(135deg, #FFF8F2, #F6C1CC);
+  border-radius: 20px 20px 0 0;
+}
+
+.otp-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.otp-modal-header h2 {
+  font-size: 2rem;
+  color: #7B1E3A;
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+.otp-description {
+  color: #2B2B2B;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.otp-contact-info {
+  color: #7B1E3A;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* OTP Modal Body */
+.otp-modal-body {
+  padding: 2rem;
+}
+
+/* OTP Inputs */
+.otp-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.otp-input {
+  width: 55px;
+  height: 60px;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border: 3px solid #F6C1CC;
+  border-radius: 10px;
+  color: #7B1E3A;
+  background-color: #FFF8F2;
+  transition: all 0.3s ease;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #C9A24D;
+  box-shadow: 0 0 0 4px rgba(201, 162, 77, 0.1);
+  transform: scale(1.05);
+}
+
+.otp-input.error {
+  border-color: #B11226;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+/* OTP Error */
+.otp-error {
+  color: #B11226;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: -0.5rem 0 1rem;
+}
+
+/* OTP Timer */
+.otp-timer {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.otp-timer p {
+  color: #2B2B2B;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.otp-timer strong {
+  color: #7B1E3A;
+  font-weight: 700;
+}
+
+.timer-expired {
+  color: #B11226;
+  font-weight: 700;
+}
+
+/* OTP Verify Button */
+.otp-verify-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.otp-verify-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* OTP Resend */
+.otp-resend {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.otp-resend p {
+  color: #8A8A8A;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.resend-btn {
+  background: none;
+  border: none;
+  color: #7B1E3A;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.resend-btn:hover {
+  color: #C9A24D;
+}
+
+/* Demo Note */
+.otp-demo-note {
+  background: linear-gradient(135deg, #FFF8F2, #F6C1CC);
+  border: 2px solid #C9A24D;
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.demo-note-title {
+  font-weight: 700;
+  color: #7B1E3A;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.demo-otp-code {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #7B1E3A;
+  letter-spacing: 0.5rem;
+  margin: 0.8rem 0;
+  font-family: 'Courier New', monospace;
+}
+
+.demo-note-text {
+  color: #8A8A8A;
+  font-size: 0.85rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ===========================
+   RESPONSIVE DESIGN
+   =========================== */
+
+@media (max-width: 768px) {
+  .otp-modal {
+    max-width: 450px;
+  }
+
+  .otp-modal-header {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .otp-modal-header h2 {
+    font-size: 1.7rem;
+  }
+
+  .otp-icon {
+    font-size: 3rem;
+  }
+
+  .otp-modal-body {
+    padding: 1.5rem;
+  }
+
+  .otp-inputs {
+    gap: 0.6rem;
+  }
+
+  .otp-input {
+    width: 50px;
+    height: 55px;
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .otp-modal {
+    margin: 1rem;
+  }
+
+  .otp-modal-header {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .otp-modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .otp-icon {
+    font-size: 2.5rem;
+  }
+
+  .otp-contact-info {
+    font-size: 0.95rem;
+  }
+
+  .otp-modal-body {
+    padding: 1.2rem;
+  }
+
+  .otp-inputs {
+    gap: 0.5rem;
+  }
+
+  .otp-input {
+    width: 45px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
+
+  .demo-otp-code {
+    font-size: 1.6rem;
+    letter-spacing: 0.3rem;
+  }
+
+  .otp-verify-btn {
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+  }
+}

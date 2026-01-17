@@ -1,0 +1,51 @@
+/* ===========================
+   GLOBAL RESPONSIVE UTILITIES
+   =========================== */
+
+/* Tablet & Below */
+@media (max-width: 1024px) {
+  .hide-tablet {
+    display: none !important;
+  }
+  
+  .show-tablet {
+    display: block !important;
+  }
+}
+
+/* Mobile & Below */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+  
+  .show-mobile {
+    display: block !important;
+  }
+
+  /* Mobile-specific padding adjustments */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .hide-small-mobile {
+    display: none !important;
+  }
+  
+  .show-small-mobile {
+    display: block !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .navbar,
+  .footer,
+  .btn {
+    display: none !important;
+  }
+}

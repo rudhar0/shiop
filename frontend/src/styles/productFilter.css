@@ -1,0 +1,197 @@
+/* ===========================
+   PRODUCT FILTER STYLES
+   =========================== */
+
+.product-filter {
+  width: 100%;
+}
+
+.filter-title {
+  font-size: 1.3rem;
+  color: #7B1E3A;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid #F6C1CC;
+}
+
+/* Filter Categories */
+.filter-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.filter-category-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  background-color: #FFF8F2;
+  border: 2px solid #F6C1CC;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2B2B2B;
+  text-align: left;
+}
+
+.filter-category-btn:hover {
+  background-color: #F6C1CC;
+  border-color: #C9A24D;
+  transform: translateX(5px);
+}
+
+.filter-category-btn.active {
+  background-color: #7B1E3A;
+  border-color: #7B1E3A;
+  color: #FFF8F2;
+}
+
+.category-name {
+  flex: 1;
+}
+
+.category-count-badge {
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 0.3rem 0.7rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.filter-category-btn.active .category-count-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #FFF8F2;
+}
+
+/* Filter Info Section */
+.filter-info-section {
+  margin-bottom: 2rem;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #FFF8F2, #F6C1CC);
+  border-radius: 8px;
+  border: 1px solid #C9A24D;
+}
+
+.filter-info-title {
+  font-size: 1rem;
+  color: #7B1E3A;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+.filter-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-info-list li {
+  color: #2B2B2B;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Price Guide */
+.filter-price-guide {
+  margin-bottom: 2rem;
+  padding: 1.2rem;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #F6C1CC;
+}
+
+.price-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.price-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #F6C1CC;
+}
+
+.price-list li:last-child {
+  border-bottom: none;
+}
+
+.price-category {
+  font-weight: 600;
+  color: #2B2B2B;
+  font-size: 0.9rem;
+}
+
+.price-range {
+  color: #7B1E3A;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Clear All Button */
+.clear-all-btn {
+  margin-top: 1.5rem;
+}
+
+/* ===========================
+   RESPONSIVE DESIGN
+   =========================== */
+
+@media (max-width: 768px) {
+  .filter-title {
+    font-size: 1.2rem;
+  }
+
+  .filter-category-btn {
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .filter-info-section,
+  .filter-price-guide {
+    padding: 1rem;
+  }
+
+  .filter-info-title {
+    font-size: 0.95rem;
+  }
+
+  .filter-info-list li {
+    font-size: 0.85rem;
+  }
+
+  .price-category,
+  .price-range {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-category-btn {
+    padding: 0.8rem;
+  }
+
+  .category-count-badge {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}
+.category-name {
+  flex: 1;
+  text-align: left;
+  color: #2B2B2B;  /* Make sure this line exists */
+  font-weight: 600;
+}
+
+.filter-category-btn.active .category-name {
+  color: #FFF8F2;  /* White text when active */
+}

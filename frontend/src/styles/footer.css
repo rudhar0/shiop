@@ -1,0 +1,490 @@
+/* ===========================
+   FOOTER STYLES
+   =========================== */
+
+.footer {
+  background-color: #2B2B2B;
+  color: #FFF8F2;
+  padding-top: 4rem;
+  margin-top: 4rem;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* ===========================
+   FOOTER SECTIONS
+   =========================== */
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-title {
+  font-size: 1.4rem;
+  color: #F6C1CC;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-bottom: 0.8rem;
+}
+
+.footer-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #C9A24D, transparent);
+  border-radius: 2px;
+}
+
+.footer-description {
+  color: #8A8A8A;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+/* ===========================
+   FOOTER LOGO
+   =========================== */
+
+.footer-logo-section {
+  margin-top: auto;
+}
+
+.footer-logo {
+  max-width: 150px;
+  height: auto;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.footer-logo:hover {
+  opacity: 1;
+}
+
+/* ===========================
+   FOOTER LINKS
+   =========================== */
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.footer-links li {
+  margin: 0;
+}
+
+.footer-link {
+  color: #8A8A8A;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.footer-link::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+  color: #C9A24D;
+}
+
+.footer-link:hover {
+  color: #F6C1CC;
+  padding-left: 1.5rem;
+}
+
+.footer-link:hover::before {
+  opacity: 1;
+}
+
+/* ===========================
+   BOOKING POLICY SECTION
+   =========================== */
+
+.footer-policy-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(138, 138, 138, 0.3);
+}
+
+.footer-subtitle {
+  color: #F6C1CC;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.footer-policy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.footer-policy-list li {
+  color: #8A8A8A;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding-left: 0;
+  margin: 0;
+}
+
+.footer-policy-list li::first-letter {
+  color: #C9A24D;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ===========================
+   CONTACT INFORMATION
+   =========================== */
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.footer-info-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.footer-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.1rem;
+}
+
+.footer-info-item > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.footer-text {
+  color: #8A8A8A;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  word-break: break-word;
+}
+
+.footer-text-small {
+  color: #8A8A8A;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Contact section specific link styling */
+.footer-contact .footer-link {
+  color: #8A8A8A;
+  padding-left: 0;
+}
+
+.footer-contact .footer-link::before {
+  display: none;
+}
+
+.footer-contact .footer-link:hover {
+  color: #F6C1CC;
+  text-decoration: underline;
+  padding-left: 0;
+}
+
+/* ===========================
+   FOOTER BOTTOM BAR
+   =========================== */
+
+.footer-bottom {
+  background-color: #1a1a1a;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(201, 162, 77, 0.2);
+}
+
+.footer-bottom-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* ===========================
+   SOCIAL MEDIA LINKS
+   =========================== */
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(246, 193, 204, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F6C1CC;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background-color: #C9A24D;
+  color: #2B2B2B;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(201, 162, 77, 0.3);
+}
+
+.social-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===========================
+   COPYRIGHT
+   =========================== */
+
+.footer-copyright {
+  flex: 1;
+  text-align: center;
+}
+
+.footer-copyright p {
+  color: #8A8A8A;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ===========================
+   PAYMENT METHODS
+   =========================== */
+
+.footer-payment {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-payment .footer-text-small {
+  margin: 0;
+  color: #8A8A8A;
+  font-weight: 600;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.payment-icon {
+  font-size: 1.5rem;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.payment-icon:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* ===========================
+   RESPONSIVE DESIGN
+   =========================== */
+
+/* Tablet View */
+@media (max-width: 1024px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  .footer-bottom-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .footer-payment {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .footer {
+    padding-top: 3rem;
+    margin-top: 3rem;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 1.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .footer-section {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(138, 138, 138, 0.2);
+  }
+
+  .footer-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-description {
+    font-size: 0.9rem;
+  }
+
+  .footer-link {
+    font-size: 0.9rem;
+  }
+
+  .footer-policy-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+
+  .footer-subtitle {
+    font-size: 1rem;
+  }
+
+  .footer-policy-list li {
+    font-size: 0.85rem;
+  }
+
+  .footer-contact {
+    gap: 1rem;
+  }
+
+  .footer-info-item {
+    gap: 0.8rem;
+  }
+
+  .footer-icon {
+    font-size: 1.2rem;
+    min-width: 26px;
+  }
+
+  .footer-text {
+    font-size: 0.9rem;
+  }
+
+  .footer-text-small {
+    font-size: 0.8rem;
+  }
+
+  .footer-bottom {
+    padding: 1.2rem 0;
+  }
+
+  .footer-bottom-container {
+    padding: 0 1.5rem;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .social-link {
+    width: 38px;
+    height: 38px;
+  }
+
+  .footer-copyright p {
+    font-size: 0.85rem;
+  }
+
+  .payment-methods {
+    justify-content: center;
+  }
+
+  .payment-icon {
+    font-size: 1.3rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .footer {
+    padding-top: 2.5rem;
+  }
+
+  .footer-container {
+    padding: 0 1rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .footer-title {
+    font-size: 1.1rem;
+  }
+
+  .footer-description {
+    font-size: 0.85rem;
+  }
+
+  .footer-logo {
+    max-width: 120px;
+  }
+
+  .footer-bottom-container {
+    padding: 0 1rem;
+  }
+
+  .social-link {
+    width: 36px;
+    height: 36px;
+  }
+
+  .social-link svg {
+    width: 18px;
+    height: 18px;
+  }
+}
