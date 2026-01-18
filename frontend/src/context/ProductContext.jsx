@@ -1,5 +1,6 @@
+// frontend/src/context/ProductContext.jsx
 import { createContext, useState, useEffect } from 'react';
-import { sampleProducts } from '../utils/sampleData';
+import { productAPI } from '../api/product.api';
 
 export const ProductContext = createContext();
 
@@ -9,15 +10,33 @@ export const ProductProvider = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState(null);
 
-  // Load products on mount (using sample data for now)
-  useEffect(() => {
-    // Simulate API call delay
-    setTimeout(() => {
-      setProducts(sampleProducts);
-      setFilteredProducts(sampleProducts);
+  // Fetch products from API
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await productAPI.getAllProducts();
+      
+      if (response.status === 'success') {
+        setProducts(response.data);
+        setFilteredProducts(response.data);
+      }
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      setError(err.message || 'Failed to fetch products');
+      setProducts([]);
+      setFilteredProducts([]);
+    } finally {
       setLoading(false);
-    }, 500);
+    }
+  };
+
+  // Load products on mount
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
   // Filter products by category and search
@@ -44,7 +63,7 @@ export const ProductProvider = ({ children }) => {
 
   // Get product by ID
   const getProductById = (id) => {
-    return products.find(product => product.id === parseInt(id));
+    return products.find(product => product.id === parseInt(id) || product._id === id);
   };
 
   // Get featured products
@@ -58,6 +77,11 @@ export const ProductProvider = ({ children }) => {
     return products.filter(product => product.category === category);
   };
 
+  // Refresh products
+  const refreshProducts = () => {
+    fetchProducts();
+  };
+
   const value = {
     products,
     filteredProducts,
@@ -66,9 +90,11 @@ export const ProductProvider = ({ children }) => {
     searchQuery,
     setSearchQuery,
     loading,
+    error,
     getProductById,
     getFeaturedProducts,
-    getProductsByCategory
+    getProductsByCategory,
+    refreshProducts
   };
 
   return (

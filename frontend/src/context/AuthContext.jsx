@@ -1,5 +1,6 @@
+// frontend/src/context/AuthContext.jsx
 import { createContext, useState, useEffect } from 'react';
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from '../utils/helpers';
+import { getCookie, setCookie, deleteCookie } from '../utils/cookies';
 
 export const AuthContext = createContext();
 
@@ -8,14 +9,22 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Load user from localStorage on mount
+  // Load user from cookies on mount
   useEffect(() => {
-    const storedUser = getLocalStorage('user');
-    const token = getLocalStorage('authToken');
+    const token = getCookie('authToken');
+    const userDataStr = getCookie('user');
     
-    if (storedUser && token) {
-      setUser(storedUser);
-      setIsAuthenticated(true);
+    if (token && userDataStr) {
+      try {
+        const userData = JSON.parse(decodeURIComponent(userDataStr));
+        setUser(userData);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Error parsing user data from cookie:', error);
+        // Clear invalid cookies
+        deleteCookie('authToken');
+        deleteCookie('user');
+      }
     }
     setLoading(false);
   }, []);
@@ -24,24 +33,30 @@ export const AuthProvider = ({ children }) => {
   const login = (userData, token) => {
     setUser(userData);
     setIsAuthenticated(true);
-    setLocalStorage('user', userData);
-    setLocalStorage('authToken', token);
+    
+    // Store in cookies (7 days expiry)
+    setCookie('authToken', token, 7);
+    setCookie('user', encodeURIComponent(JSON.stringify(userData)), 7);
   };
 
   // Logout function
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    removeLocalStorage('user');
-    removeLocalStorage('authToken');
-    removeLocalStorage('cart'); // Clear cart on logout
+    
+    // Clear cookies
+    deleteCookie('authToken');
+    deleteCookie('user');
+    
+    // Clear localStorage as backup
+    localStorage.removeItem('cart');
   };
 
   // Update user profile
   const updateUser = (updatedData) => {
     const updatedUser = { ...user, ...updatedData };
     setUser(updatedUser);
-    setLocalStorage('user', updatedUser);
+    setCookie('user', encodeURIComponent(JSON.stringify(updatedUser)), 7);
   };
 
   const value = {

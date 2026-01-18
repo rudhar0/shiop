@@ -1,20 +1,18 @@
+// frontend/src/pages/Login.jsx - Updated with Cookies
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { validateEmail, validatePhone } from '../utils/validators';
-import { generateOTP } from '../utils/helpers';
-import OTPModal from '../components/auth/OTPModal';
+import { authAPI } from '../api/auth.api';
+import { validateEmail } from '../utils/validators';
 import '../styles/auth.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    emailOrPhone: '',
+    email: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [showOTPModal, setShowOTPModal] = useState(false);
-  const [generatedOTP, setGeneratedOTP] = useState('');
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -28,7 +26,6 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -40,15 +37,10 @@ const Login = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.emailOrPhone.trim()) {
-      newErrors.emailOrPhone = 'Email or phone number is required';
-    } else {
-      const isEmail = formData.emailOrPhone.includes('@');
-      if (isEmail && !validateEmail(formData.emailOrPhone)) {
-        newErrors.emailOrPhone = 'Invalid email address';
-      } else if (!isEmail && !validatePhone(formData.emailOrPhone)) {
-        newErrors.emailOrPhone = 'Invalid phone number';
-      }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Invalid email address';
     }
 
     if (!formData.password) {
@@ -66,51 +58,26 @@ const Login = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      // For demo: Check if user exists (simple mock)
-      const mockUser = {
-        email: 'demo@samaira.com',
-        phone: '9876543210',
-        password: 'demo123'
-      };
+    try {
+      const response = await authAPI.login({
+        email: formData.email,
+        password: formData.password
+      });
 
-      const isEmailLogin = formData.emailOrPhone.includes('@');
-      const isValidCredentials = (
-        (isEmailLogin && formData.emailOrPhone === mockUser.email) ||
-        (!isEmailLogin && formData.emailOrPhone === mockUser.phone)
-      ) && formData.password === mockUser.password;
-
-      if (isValidCredentials) {
-        // Generate OTP
-        const otp = generateOTP();
-        setGeneratedOTP(otp);
-        console.log('Generated OTP:', otp); // In real app, this would be sent via SMS/Email
-        setShowOTPModal(true);
-        setIsLoading(false);
-      } else {
-        setErrors({ password: 'Invalid credentials' });
-        setIsLoading(false);
+      if (response.status === 'success') {
+        // Login user (stores in cookies)
+        login(response.user, response.token);
+        
+        navigate(from, { replace: true });
       }
-    }, 1000);
-  };
-
-  const handleOTPVerify = (isVerified) => {
-    if (isVerified) {
-      // Mock user data
-      const userData = {
-        name: 'Demo User',
-        email: 'demo@samaira.com',
-        contact: '9876543210',
-        city: 'Ludhiana',
-        state: 'Punjab'
-      };
-      const token = 'mock-jwt-token-' + Date.now();
-      
-      login(userData, token);
-      navigate(from, { replace: true });
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ 
+        password: typeof error === 'string' ? error : 'Invalid email or password' 
+      });
+    } finally {
+      setIsLoading(false);
     }
-    setShowOTPModal(false);
   };
 
   return (
@@ -124,20 +91,20 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
-              <label htmlFor="emailOrPhone" className="form-label">
-                Email or Phone Number
+              <label htmlFor="email" className="form-label">
+                Email Address
               </label>
               <input
-                type="text"
-                id="emailOrPhone"
-                name="emailOrPhone"
-                className={`form-input ${errors.emailOrPhone ? 'error' : ''}`}
-                placeholder="Enter your email or phone number"
-                value={formData.emailOrPhone}
+                type="email"
+                id="email"
+                name="email"
+                className={`form-input ${errors.email ? 'error' : ''}`}
+                placeholder="Enter your email"
+                value={formData.email}
                 onChange={handleChange}
               />
-              {errors.emailOrPhone && (
-                <span className="form-error">{errors.emailOrPhone}</span>
+              {errors.email && (
+                <span className="form-error">{errors.email}</span>
               )}
             </div>
 
@@ -159,6 +126,12 @@ const Login = () => {
               )}
             </div>
 
+            <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
+              <Link to="/forgot-password" className="auth-link" style={{ fontSize: '0.9rem' }}>
+                Forgot Password?
+              </Link>
+            </div>
+
             <button
               type="submit"
               className="btn btn-primary btn-block auth-submit-btn"
@@ -177,13 +150,6 @@ const Login = () => {
                 Register here
               </Link>
             </p>
-
-            <div className="demo-credentials">
-              <p className="demo-title">Demo Credentials:</p>
-              <p>Email: demo@samaira.com</p>
-              <p>Phone: 9876543210</p>
-              <p>Password: demo123</p>
-            </div>
           </form>
         </div>
 
@@ -198,16 +164,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
-      {showOTPModal && (
-        <OTPModal
-          isOpen={showOTPModal}
-          onClose={() => setShowOTPModal(false)}
-          onVerify={handleOTPVerify}
-          contactInfo={formData.emailOrPhone}
-          generatedOTP={generatedOTP}
-        />
-      )}
     </div>
   );
 };

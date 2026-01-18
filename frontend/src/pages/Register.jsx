@@ -1,27 +1,20 @@
+// frontend/src/pages/Register.jsx - Updated with Cookies & Proper OTP Flow
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { validateRegistrationForm } from '../utils/validators';
-import { generateOTP } from '../utils/helpers';
-import OTPModal from '../components/auth/OTPModal';
+import { authAPI } from '../api/auth.api';
 import '../styles/auth.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
-    contact: '',
-    city: '',
-    state: '',
     password: '',
     confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [showOTPModal, setShowOTPModal] = useState(false);
-  const [generatedOTP, setGeneratedOTP] = useState('');
 
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -30,7 +23,6 @@ const Register = () => {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -40,7 +32,19 @@ const Register = () => {
   };
 
   const validateForm = () => {
-    const newErrors = validateRegistrationForm(formData);
+    const newErrors = {};
+
+    if (!formData.firstName || formData.firstName.trim().length < 2) {
+      newErrors.firstName = 'First name must be at least 2 characters';
+    }
+
+    if (!formData.lastName || formData.lastName.trim().length < 2) {
+      newErrors.lastName = 'Last name must be at least 2 characters';
+    }
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    }
 
     if (!formData.password || formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
@@ -61,30 +65,36 @@ const Register = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      // Generate OTP
-      const otp = generateOTP();
-      setGeneratedOTP(otp);
-      console.log('Generated OTP:', otp); // In real app, this would be sent via SMS/Email
-      console.log('OTP sent to Email:', formData.email);
-      console.log('OTP sent to Phone:', formData.contact);
-      
-      setShowOTPModal(true);
-      setIsLoading(false);
-    }, 1000);
-  };
+    try {
+      // Register user - backend will automatically send OTP
+      const response = await authAPI.register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password
+      });
 
-  const handleOTPVerify = (isVerified) => {
-    if (isVerified) {
-      // Remove password fields before storing
-      const { password, confirmPassword, ...userData } = formData;
-      const token = 'mock-jwt-token-' + Date.now();
-      
-      login(userData, token);
-      navigate('/', { replace: true });
+      if (response.status === 'success') {
+        // Navigate to OTP verification page
+        navigate('/verify-otp', {
+          state: {
+            email: formData.email,
+            userData: {
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              email: formData.email
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      setErrors({ 
+        email: typeof error === 'string' ? error : 'Registration failed. Please try again.' 
+      });
+    } finally {
+      setIsLoading(false);
     }
-    setShowOTPModal(false);
   };
 
   return (
@@ -99,39 +109,38 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="name" className="form-label">
-                  Full Name *
+                <label htmlFor="firstName" className="form-label">
+                  First Name *
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  className={`form-input ${errors.name ? 'error' : ''}`}
-                  placeholder="Enter your full name"
-                  value={formData.name}
+                  id="firstName"
+                  name="firstName"
+                  className={`form-input ${errors.firstName ? 'error' : ''}`}
+                  placeholder="Enter first name"
+                  value={formData.firstName}
                   onChange={handleChange}
                 />
-                {errors.name && (
-                  <span className="form-error">{errors.name}</span>
+                {errors.firstName && (
+                  <span className="form-error">{errors.firstName}</span>
                 )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="contact" className="form-label">
-                  Phone Number *
+                <label htmlFor="lastName" className="form-label">
+                  Last Name *
                 </label>
                 <input
-                  type="tel"
-                  id="contact"
-                  name="contact"
-                  className={`form-input ${errors.contact ? 'error' : ''}`}
-                  placeholder="10-digit phone number"
-                  value={formData.contact}
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  className={`form-input ${errors.lastName ? 'error' : ''}`}
+                  placeholder="Enter last name"
+                  value={formData.lastName}
                   onChange={handleChange}
-                  maxLength="10"
                 />
-                {errors.contact && (
-                  <span className="form-error">{errors.contact}</span>
+                {errors.lastName && (
+                  <span className="form-error">{errors.lastName}</span>
                 )}
               </div>
             </div>
@@ -152,44 +161,6 @@ const Register = () => {
               {errors.email && (
                 <span className="form-error">{errors.email}</span>
               )}
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="city" className="form-label">
-                  City *
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  className={`form-input ${errors.city ? 'error' : ''}`}
-                  placeholder="Your city"
-                  value={formData.city}
-                  onChange={handleChange}
-                />
-                {errors.city && (
-                  <span className="form-error">{errors.city}</span>
-                )}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="state" className="form-label">
-                  State *
-                </label>
-                <input
-                  type="text"
-                  id="state"
-                  name="state"
-                  className={`form-input ${errors.state ? 'error' : ''}`}
-                  placeholder="Your state"
-                  value={formData.state}
-                  onChange={handleChange}
-                />
-                {errors.state && (
-                  <span className="form-error">{errors.state}</span>
-                )}
-              </div>
             </div>
 
             <div className="form-row">
@@ -232,7 +203,7 @@ const Register = () => {
 
             <div className="otp-info-box">
               <span className="info-icon">ℹ️</span>
-              <p>OTP will be sent to both your email and phone number for verification</p>
+              <p>OTP will be sent to your email for verification</p>
             </div>
 
             <button
@@ -267,16 +238,6 @@ const Register = () => {
           </div>
         </div>
       </div>
-
-      {showOTPModal && (
-        <OTPModal
-          isOpen={showOTPModal}
-          onClose={() => setShowOTPModal(false)}
-          onVerify={handleOTPVerify}
-          contactInfo={`${formData.email} & ${formData.contact}`}
-          generatedOTP={generatedOTP}
-        />
-      )}
     </div>
   );
 };
