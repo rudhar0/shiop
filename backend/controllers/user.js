@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const FriendRequest = require("../models/friendRequest")
+
 const filterObj = require("../utils/filterObj");
 exports.updateMe = async (req, res, next) => {
 
@@ -27,6 +27,13 @@ exports.updateMe = async (req, res, next) => {
         data: updated_user,
     });
 
+}
+
+exports.getMe = async (req, res, next) => {
+    res.status(200).json({
+        status: "success",
+        data: req.user
+    })
 }
 
 

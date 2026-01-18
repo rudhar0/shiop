@@ -1,3 +1,4 @@
+// backend/models/user.js - Updated with Admin Field
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Email is required"],
+    unique: true,
     validate: {
       validator: function (email) {
         return String(email)
@@ -32,27 +34,26 @@ const userSchema = new mongoose.Schema({
     },
   },
   password: {
-    // unselect
     type: String,
+    select: false,
   },
   passwordChangedAt: {
-    // unselect
     type: Date,
+    select: false,
   },
   passwordResetToken: {
-    // unselect
     type: String,
+    select: false,
   },
   passwordResetExpires: {
-    // unselect
     type: Date,
+    select: false,
   },
   createdAt: {
     type: Date,
     default: Date.now(),
   },
   updatedAt: {
-    // unselect
     type: Date,
   },
   verified: {
@@ -61,53 +62,39 @@ const userSchema = new mongoose.Schema({
   },
   otp: {
     type: String,
+    select: false,
   },
   otp_expiry_time: {
     type: Date,
+    select: false,
   },
-  friends: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
-  socket_id: {
-    type: String
-  },
-  status: {
+  // Admin field
+  role: {
     type: String,
-    enum: ["Online", "Offline"]
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   }
 });
 
 userSchema.pre("save", async function (next) {
-  // Only run this function if password was actually modified
   if (!this.isModified("otp") || !this.otp) return next();
-
-  // Hash the otp with cost of 12
   this.otp = await bcrypt.hash(this.otp.toString(), 12);
-
-  console.log(this.otp.toString(), "FROM PRE SAVE HOOK");
-
   next();
 });
 
 userSchema.pre("save", async function (next) {
-  // Only run this function if password was actually modified
   if (!this.isModified("password") || !this.password) return next();
-
-  // Hash the password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
-
-  //! Shift it to next hook // this.passwordChangedAt = Date.now() - 1000;
-
   next();
 });
 
 userSchema.pre("save", function (next) {
   if (!this.isModified("password") || this.isNew || !this.password)
     return next();
-
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
@@ -122,6 +109,7 @@ userSchema.methods.correctPassword = async function (
 userSchema.methods.correctOTP = async function (candidateOTP, userOTP) {
   return await bcrypt.compare(candidateOTP, userOTP);
 };
+
 userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
   if (this.passwordChangedAt) {
     const changedTimeStamp = parseInt(
@@ -130,8 +118,6 @@ userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
     );
     return JWTTimeStamp < changedTimeStamp;
   }
-
-  // FALSE MEANS NOT CHANGED
   return false;
 };
 

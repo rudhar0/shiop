@@ -27,7 +27,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "PATCH", "POST", "DELETE", "PUT"],
     credentials: true,
   })
@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 
 
-app.use(routes)
+app.use("/api", routes)
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
